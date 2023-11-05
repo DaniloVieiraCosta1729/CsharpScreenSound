@@ -1,7 +1,11 @@
-﻿string mensagemDeBoasVindas = "Bem vindo ao Screen Sound\n";
+﻿using System.Linq;
 
-List<string> bandas = new List<string>(); // instancia uma lista.
+string mensagemDeBoasVindas = "Bem vindo ao Screen Sound\n";
 
+//List<string> bandas = new List<string>() { "Etsuko Yakushimaru", "Home Made Kazoku", "Flow", "BabyMetal", "Rammstein", "DragonForce" }; // instancia uma lista.
+Dictionary<string, List<int>> bandasRegistradas = new Dictionary<string, List<int>>();
+bandasRegistradas.Add("Etsuko Yakushimaru", new List<int>());
+bandasRegistradas.Add("Flow", new List<int> { 10, 10, 9});
 void ExibirMensagem(string mensagem)
 {
     string confete = "*";
@@ -47,19 +51,19 @@ void ExibirMenu()
             goto restart;
 
         case 2:
-            Console.WriteLine($"Você escolheu a opção {escolha}.");
-            break;
+            MostrarBandas();
+            goto restart;
 
         case 3:
-            Console.WriteLine($"Você escolheu a opção {escolha}.");
-            break;
+            AvaliarBanda();
+            goto restart;
 
         case 4:
-            Console.WriteLine($"Você escolheu a opção {escolha}.");
-            break;
+            ExibirMedia();
+            goto restart;
 
         case -1:
-            Console.WriteLine($"Tchau, volte sempre.");
+            Console.WriteLine($"\nTchau, volte sempre.");
             break;
 
         default:
@@ -71,13 +75,87 @@ void ExibirMenu()
 void RegistrarBanda()
 {
     Console.Clear();
+    Titulo("Registrar Banda");
     Console.WriteLine("Registro de Bandas\n");
     Console.Write("Digite o nome da Banda: ");
     string banda = Console.ReadLine()!;
-    bandas.Add( banda );
+    bandasRegistradas.Add( banda, new List<int>() );
     Console.WriteLine($"A banda {banda} foi registrada com sucesso.");
     Thread.Sleep(2000);
     Console.Clear();
+}
+
+void MostrarBandas()
+{
+    Console.Clear();
+    Titulo("Bandas Registradas");
+    foreach (string banda in bandasRegistradas.Keys)
+    {
+        Console.WriteLine($"- {banda}\n");
+    }
+    Console.Write("\nPressione qualquer tecla para volta para o Menu Principal: ");
+    Console.ReadKey();
+    Console.Clear();
+}
+void Titulo(string titulo)
+{
+    string borda = "";
+    foreach (char item in titulo)
+    {
+        borda += "*";
+    }
+    Console.WriteLine($"{borda}\n{titulo}\n{borda}\n");
+}
+void AvaliarBanda()
+{
+    Console.Clear();
+    Titulo("Avaliar Banda");
+    Console.Write("\nQual banda deseja avaliar: ");
+    string bandaAvaliada = Console.ReadLine()!;
+
+    if ( bandasRegistradas.ContainsKey( bandaAvaliada ))
+    {
+        Console.Write($"Sua nota para a banda {bandaAvaliada} é: ");
+        byte nota = byte.Parse(Console.ReadLine());
+        bandasRegistradas[bandaAvaliada].Add(nota);
+        Console.WriteLine($"\nA sua avaliação para a banda {bandaAvaliada} foi registrada com sucesso!");
+        Thread.Sleep(5000);
+        Console.Clear();
+    }
+    else
+    {
+        Console.WriteLine($"\nA banda {bandaAvaliada} não foi encontrada em nosso banco de dados.");
+        Console.Write("Pressione qualquer tecla para voltar ao menu principal: ");
+        Console.ReadKey();
+        Console.Clear();
+    }
+}
+float MediaDasNotasDeUmaBanda(string nomeDaBanda)
+{
+    float media;
+    media = (float)bandasRegistradas[nomeDaBanda].Average();
+    return media;
+}
+void ExibirMedia()
+{
+    Console.Clear();
+    Titulo("Média da Avaliação das bandas");
+    Console.Write("\nDigite a banda que você deseja ver a avaliação: ");
+    string nome = Console.ReadLine();
+    if (bandasRegistradas.ContainsKey(nome))
+    {
+        Console.WriteLine($"\nA média da banda {nome} é: {MediaDasNotasDeUmaBanda(nome):N2}");
+        Console.Write("\nDigite qualquer tecla para voltar ao menu principal: ");
+        Console.ReadKey();
+        Console.Clear();
+    }
+    else
+    {
+        Console.WriteLine($"A banda {nome} não foi encontrada em nosso banco de dados.");
+        Console.Write("\nDigite qualquer tecla para voltar ao menu principal: ");
+        Console.ReadKey();
+        Console.Clear();
+    }
 }
 
 ExibirMenu();
