@@ -1,14 +1,6 @@
 ﻿string mensagemDeBoasVindas = "Bem vindo ao Screen Sound\n";
 
-Console.WriteLine(@"
-
-░██████╗░█████╗░██████╗░███████╗███████╗███╗░░██╗░██████╗░█████╗░██╗░░░██╗███╗░░██╗██████╗░
-██╔════╝██╔══██╗██╔══██╗██╔════╝██╔════╝████╗░██║██╔════╝██╔══██╗██║░░░██║████╗░██║██╔══██╗
-╚█████╗░██║░░╚═╝██████╔╝█████╗░░█████╗░░██╔██╗██║╚█████╗░██║░░██║██║░░░██║██╔██╗██║██║░░██║
-░╚═══██╗██║░░██╗██╔══██╗██╔══╝░░██╔══╝░░██║╚████║░╚═══██╗██║░░██║██║░░░██║██║╚████║██║░░██║
-██████╔╝╚█████╔╝██║░░██║███████╗███████╗██║░╚███║██████╔╝╚█████╔╝╚██████╔╝██║░╚███║██████╔╝
-╚═════╝░░╚════╝░╚═╝░░╚═╝╚══════╝╚══════╝╚═╝░░╚══╝╚═════╝░░╚════╝░░╚═════╝░╚═╝░░╚══╝╚═════╝░
-");
+List<string> bandas = new List<string>(); // instancia uma lista.
 
 void ExibirMensagem(string mensagem)
 {
@@ -23,25 +15,36 @@ void ExibirMensagem(string mensagem)
 
 //ExibirMensagem(mensagemDeBoasVindas);
 
-Console.WriteLine(mensagemDeBoasVindas);
-
 void ExibirMenu()
 {
+    restart:
+    Console.WriteLine(@"
+
+░██████╗░█████╗░██████╗░███████╗███████╗███╗░░██╗░██████╗░█████╗░██╗░░░██╗███╗░░██╗██████╗░
+██╔════╝██╔══██╗██╔══██╗██╔════╝██╔════╝████╗░██║██╔════╝██╔══██╗██║░░░██║████╗░██║██╔══██╗
+╚█████╗░██║░░╚═╝██████╔╝█████╗░░█████╗░░██╔██╗██║╚█████╗░██║░░██║██║░░░██║██╔██╗██║██║░░██║
+░╚═══██╗██║░░██╗██╔══██╗██╔══╝░░██╔══╝░░██║╚████║░╚═══██╗██║░░██║██║░░░██║██║╚████║██║░░██║
+██████╔╝╚█████╔╝██║░░██║███████╗███████╗██║░╚███║██████╔╝╚█████╔╝╚██████╔╝██║░╚███║██████╔╝
+╚═════╝░░╚════╝░╚═╝░░╚═╝╚══════╝╚══════╝╚═╝░░╚══╝╚═════╝░░╚════╝░░╚═════╝░╚═╝░░╚══╝╚═════╝░
+");
+
+    Console.WriteLine(mensagemDeBoasVindas);
+
     Console.WriteLine("  (1) - Registrar Banda");
     Console.WriteLine("  (2) - Mostrar todas as Bandas");
     Console.WriteLine("  (3) - Avaliar Banda");
     Console.WriteLine("  (4) - Exibir média de uma Banda");
     Console.WriteLine(" (-1) - sair");
 
-    Console.Write("Digite sua Escolha: ");
+    Console.Write("\nDigite sua Escolha: ");
 
-    int escolha = int.Parse(Console.ReadLine())!;
+    int escolha = int.Parse(Console.ReadLine()!);
 
     switch (escolha)
     {
         case 1:
-            Console.WriteLine($"Você escolheu a opção {escolha}.");
-            break;
+            RegistrarBanda();
+            goto restart;
 
         case 2:
             Console.WriteLine($"Você escolheu a opção {escolha}.");
@@ -56,11 +59,25 @@ void ExibirMenu()
             break;
 
         case -1:
-            Console.WriteLine($"Você escolheu a opção {escolha}.");
+            Console.WriteLine($"Tchau, volte sempre.");
             break;
 
         default:
-            break;
+            Console.WriteLine("Opção inválida.\n");
+            goto restart;
     }
 }
+
+void RegistrarBanda()
+{
+    Console.Clear();
+    Console.WriteLine("Registro de Bandas\n");
+    Console.Write("Digite o nome da Banda: ");
+    string banda = Console.ReadLine()!;
+    bandas.Add( banda );
+    Console.WriteLine($"A banda {banda} foi registrada com sucesso.");
+    Thread.Sleep(2000);
+    Console.Clear();
+}
+
 ExibirMenu();
